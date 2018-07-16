@@ -1,4 +1,4 @@
-package com.example.abedkiloo.cpmisapp;
+package com.example.abedkiloo.cpmisapp.CPIMSActivities;
 
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
@@ -7,15 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.abedkiloo.cpmisapp.R;
 import com.example.abedkiloo.cpmisapp.Utils.Constants;
-import com.example.abedkiloo.cpmisapp.Utils.MySingleton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class Login extends AppCompatActivity {
+public class LoginUSG extends AppCompatActivity {
 
     /**
      * user credentials
@@ -50,7 +49,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.usg_activity_login);
         ButterKnife.bind(this);
 
     }
@@ -61,7 +60,7 @@ public class Login extends AppCompatActivity {
 
     @OnClick(R.id.btn_login)
     void click() {
-        Intent form1a = new Intent(Login.this, OVC_CARE.class);
+        Intent form1a = new Intent(LoginUSG.this, OVC_CARE.class);
         startActivity(form1a);
 
         user_name = editTextUserName.getText().toString().trim();

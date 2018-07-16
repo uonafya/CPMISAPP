@@ -1,4 +1,4 @@
-package com.example.abedkiloo.cpmisapp;
+package com.example.abedkiloo.cpmisapp.CPIMSActivities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.support.v7.widget.AppCompatSpinner;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.abedkiloo.cpmisapp.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -4,6 +4,9 @@
     <string name="loading">Loading ...</string>
     <string name="user_name">Enter User Name</string>
     <string name="search">Search ..</string>
+    <string name="gok">GOK</string>
+    <string name="usg">USG</string>
+    <string name="select_category">Select Category</string>
     <string name="click_search">Search</string>
     <string name="fill_form">Fill Details</string>
     <string name="password_hint">Password</string>

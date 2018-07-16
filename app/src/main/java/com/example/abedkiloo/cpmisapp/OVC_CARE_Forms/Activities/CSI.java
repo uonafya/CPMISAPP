@@ -8,30 +8,35 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.DomainEvalution;
+import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.CSI.CSI_Priorities;
+import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.CSI.DomainEvalution;
 import com.example.abedkiloo.cpmisapp.R;
 
 public class CSI extends AppCompatActivity {
     private ActionBar toolbar;
 
-    private TextView mTextMessage;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        Fragment fragment;
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_domain_evaluation:
-                    mTextMessage.setText(R.string.domain_evaluation);
+                    toolbar.setTitle(R.string.domain_evaluation);
+                    fragment = new DomainEvalution();
+                    loadFragment(fragment);
                     return true;
                 case R.id.navigation_csi_priorities:
-                    mTextMessage.setText(R.string.csi_priorities);
+                    toolbar.setTitle(R.string.csi_priorities);
+                    fragment = new CSI_Priorities();
+                    loadFragment(fragment);
                     return true;
                 case R.id.navigation_support_service:
-                    mTextMessage.setText(R.string.support_services);
+                    toolbar.setTitle(R.string.support_services);
+                    fragment = new DomainEvalution();
+                    loadFragment(fragment);
                     return true;
             }
             return false;
@@ -42,15 +47,16 @@ public class CSI extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_csi);
-//
-//        toolbar = getSupportActionBar();
-//
+
+        toolbar = getSupportActionBar();
+
 //        // load the store fragment by default
-//        toolbar.setTitle(R.string.domain_evaluation);
-//        loadFragment(new DomainEvalution());
-//        mTextMessage = (TextView) findViewById(R.id.message);
-//        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-//        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        loadFragment(new DomainEvalution());
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        toolbar.setTitle(R.string.domain_evaluation);
+
     }
 
     private void loadFragment(Fragment fragment) {

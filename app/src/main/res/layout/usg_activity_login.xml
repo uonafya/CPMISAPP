@@ -8,7 +8,7 @@
     android:layout_marginLeft="24dp"
     android:layout_marginRight="24dp"
     android:layout_marginTop="40dp"
-    tools:context=".Login">
+    tools:context=".CPIMSActivities.LoginUSG">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_login"

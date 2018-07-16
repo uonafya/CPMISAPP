@@ -1,4 +1,4 @@
-package com.example.abedkiloo.cpmisapp;
+package com.example.abedkiloo.cpmisapp.CPIMSActivities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Activities.CSI;
+import com.example.abedkiloo.cpmisapp.R;
 import com.example.abedkiloo.cpmisapp.Utils.CPMISSharedPrerences;
 import com.example.abedkiloo.cpmisapp.Utils.Constants;
 
@@ -27,7 +29,6 @@ public class Forms extends AppCompatActivity {
     CPMISSharedPrerences cpmisSharedPrerences;
 
     Class selected_form = null;
-    ;
 
 
     @Override
@@ -47,39 +48,44 @@ public class Forms extends AppCompatActivity {
 
     @OnClick(R.id.btn_fill_details)
     void click() {
+        if (selected_form == null) {
+            Toast.makeText(this, "Please Select a Form", Toast.LENGTH_SHORT).show();
 
-        Intent form1a = new Intent(Forms.this, selected_form);
-        startActivity(form1a);
+        } else {
+            Intent form1a = new Intent(Forms.this, selected_form);
+            startActivity(form1a);
+
+        }
     }
 
     @OnItemSelected(R.id.spinner_select_form)
     public void onItemSelected(AdapterView<?> parent, View arg1, int pos, long id) {
         String str = (String) parent.getItemAtPosition(pos);
-        if (str.equals(Constants.Child_Status_Index_form)) {
-            selected_form = CSI.class;
+        switch (str) {
+            case Constants.Please_Select_Form:
+                selected_form = null;
+                break;
+            case Constants.Child_Status_Index_Form:
+                selected_form = CSI.class;
+                break;
+            case Constants.Household_Assessment_Form:
+                selected_form = CSI.class;
+                break;
+            case Constants.Service_and_Monitoring_Form:
+                selected_form = CSI.class;
+                break;
+            case Constants.Caregiver_Assessment_Form:
+                selected_form = CSI.class;
+                break;
+
         }
-//        Toast.makeText(this, str, Toast.
-// LENGTH_SHORT).show();
     }
 
-//
-//    private void form_navigation() {
-//        spinnerSelectForm.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//    }
 
     private void populateSpinner() {
         String[] criteria =
-                new String[]{"Please Select Form", Constants.Child_Status_Index_form, "Household Assessment", "Service and Monitoring(Form 1A)", "CaregiverAssessment"};
+                new String[]{"Please Select Form", Constants.Child_Status_Index_Form, Constants.Household_Assessment_Form,
+                        Constants.Service_and_Monitoring_Form, Constants.Caregiver_Assessment_Form};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, criteria);
         spinnerSelectForm.setAdapter(adapter);
 
