@@ -16,7 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".OVC_CARE_Forms.Activities.Form1A"
+            android:label="@string/form_1a_detail_activity" />
+        <activity android:name=".Forms" />
+        <activity android:name=".OVC_CARE" />
+        <activity
+            android:name=".OVC_CARE_Forms.Activities.CSI"
+            android:label="@string/title_activity_csi"></activity>
     </application>
 
 </manifest>

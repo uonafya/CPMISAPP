@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_assessment"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/form_1a_assessment" />
+
+    <item
+        android:id="@+id/navigation_critical_events"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/form_1a_critical_events" />
+
+    <item
+        android:id="@+id/navigation_priority_need"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/form_1a_priority_needs" />
+    <item
+        android:id="@+id/navigation_services"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/form_1a_services" />
+
+</menu>
