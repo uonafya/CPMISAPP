@@ -18,8 +18,21 @@ public class User {
         this.password = password;
     }
 
-    public String username;
-    public String password;
+     String username;
+     String password;
+     String id;
+     String designation;
+     String first_name;
+     String other_names;
+     String surname;
+     String email;
+     String des_phone_number;
+     String date_of_birth;
+     String date_of_death;
+     String sex_id;
+     String is_void;
+     String created_at;
+     String created_by;
 
     public User(String username, String password) {
         this.username = username;

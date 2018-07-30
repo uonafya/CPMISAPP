@@ -7,10 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".CPIMSActivities.OrgUnitSelect">
 
+    <SearchView
+        android:id="@+id/orgunit_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="@string/ovc_search">
+
+    </SearchView>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/orgUnitSelectRecycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/orgunit_search">
 
     </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

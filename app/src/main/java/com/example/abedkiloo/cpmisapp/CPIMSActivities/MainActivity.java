@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         ovcRecycler.setAdapter(ovcAdapter);
 
 //        ovcSearchView = findViewById(R.id.ovc_search);
-//        ovcSearchView.setIconified(true);
+        ovcSearchView.setIconified(false);
 
 
         prepareOVCData();

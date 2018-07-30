@@ -151,10 +151,11 @@ public class LoginUSG extends AppCompatActivity {
                         /**
                          * redirect to user and store session
                          */
-                        Log.e("SUCCESS", "=="+response.toString());
-                        Toast.makeText(LoginUSG.this, response.toString(), Toast.LENGTH_SHORT).show();
+
+                        Log.e("SUCCESS", "==" + response.body().getToken());
+                        Toast.makeText(LoginUSG.this, response.body().toString(), Toast.LENGTH_SHORT).show();
                         cpmisSessionManager.createLoginSession(user.getUsername(), user.getPassword());
-                        Intent form1a = new Intent(LoginUSG.this, MainActivity.class);
+                        Intent form1a = new Intent(LoginUSG.this, OrgUnitSelect.class);
                         startActivity(form1a);
                     } else {
                         try {
@@ -173,7 +174,6 @@ public class LoginUSG extends AppCompatActivity {
                     Log.e("RETRO_FAILURE_ERROR_1", String.valueOf(t));
 
 
-//                Toast.makeText(LoginUSG.this, (CharSequence) t, Toast.LENGTH_SHORT).show();
                 }
             });
         }

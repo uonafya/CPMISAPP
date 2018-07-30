@@ -29,6 +29,9 @@ public class CPMISSessionManager {
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
 
+    // authorization
+    public static final String KEY_TOKEN = "token";
+
     public CPMISSessionManager(Context cpmisContext) {
         this._context = cpmisContext;
         pref = _context.getSharedPreferences(Constants.CPIMS_PREF_NAME, PRIVATE_MODE);
@@ -49,6 +52,9 @@ public class CPMISSessionManager {
         // Storing email in pref
         editor.putString(KEY_EMAIL, email);
 
+        // Storing token in pref
+        editor.putString(KEY_TOKEN, email);
+
         // commit changes
         editor.commit();
     }
@@ -63,6 +69,9 @@ public class CPMISSessionManager {
 
         // user email id
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+
+   // user token
+        user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
 
         // return user
         return user;

@@ -1,11 +1,15 @@
 package com.example.abedkiloo.cpmisapp.Utils;
 
+import android.content.Intent;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Activities.Form1A;
 import com.example.abedkiloo.cpmisapp.R;
 
 import java.util.List;
@@ -25,6 +29,8 @@ public class OVCAdapter extends RecyclerView.Adapter<OVCAdapter.MyViewHolder> {
         AppCompatTextView ovc_gender;
         @BindView(R.id.ovc_name)
         AppCompatTextView ovc_name;
+        @BindView(R.id.btn_fill_ovc_form)
+        AppCompatButton btn_fill_ovc_form;
 
         MyViewHolder(View view) {
             super(view);
@@ -51,6 +57,12 @@ public class OVCAdapter extends RecyclerView.Adapter<OVCAdapter.MyViewHolder> {
         OVC movie = ovcList.get(position);
         holder.ovc_location.setText(movie.getLocation());
         holder.ovc_name.setText(movie.getName());
+        holder.btn_fill_ovc_form.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.getContext().startActivity(new Intent(view.getContext(), Form1A.class));
+            }
+        });
     }
 
     @Override

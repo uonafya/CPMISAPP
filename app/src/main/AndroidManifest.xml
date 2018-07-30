@@ -13,12 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".CPIMSActivities.LoginUSG"></activity>
-        <activity android:name=".CPIMSActivities.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".CPIMSActivities.MainActivity"
+            android:label="@string/title_activity_ovc">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".OVC_CARE_Forms.Activities.Form1A"
@@ -29,8 +26,13 @@
             android:name=".OVC_CARE_Forms.Activities.CSI"
             android:label="@string/title_activity_csi" />
         <activity android:name=".CPIMSActivities.Launcher"></activity>
-        <activity android:name=".CPIMSActivities.OrgUnitSelect">
+        <activity android:name=".CPIMSActivities.OrgUnitSelect"
+            android:label="@string/title_activity_ovc_selection">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
