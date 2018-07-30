@@ -8,9 +8,11 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.abedkiloo.cpmisapp.R;
+import com.example.abedkiloo.cpmisapp.Utils.CPMISSessionManager;
 
 public class Form1A extends AppCompatActivity {
 
+    CPMISSessionManager cpmisSessionManager;
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -40,6 +42,11 @@ public class Form1A extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form1);
+        /**
+         * session manager
+         */
+        cpmisSessionManager = new CPMISSessionManager(getApplicationContext());
+        cpmisSessionManager.checkLogin();
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

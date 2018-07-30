@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.abedkiloo.cpmisapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".CPIMSActivities.LoginUSG"></activity>
-        <activity android:name=".CPIMSActivities.MainActivity" />
+        <activity android:name=".CPIMSActivities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".OVC_CARE_Forms.Activities.Form1A"
             android:label="@string/form_1a_detail_activity" />
@@ -19,12 +28,9 @@
         <activity
             android:name=".OVC_CARE_Forms.Activities.CSI"
             android:label="@string/title_activity_csi" />
-        <activity android:name=".CPIMSActivities.Launcher">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".CPIMSActivities.Launcher"></activity>
+        <activity android:name=".CPIMSActivities.OrgUnitSelect">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

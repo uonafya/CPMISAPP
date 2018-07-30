@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Activities.CSI;
 import com.example.abedkiloo.cpmisapp.R;
-import com.example.abedkiloo.cpmisapp.Utils.CPMISSharedPrerences;
+import com.example.abedkiloo.cpmisapp.Utils.CPMISSessionManager;
 import com.example.abedkiloo.cpmisapp.Utils.Constants;
 
 import butterknife.BindView;
@@ -26,7 +26,7 @@ public class Forms extends AppCompatActivity {
     @BindView(R.id.btn_fill_details)
     Button btn_fill_details;
 
-    CPMISSharedPrerences cpmisSharedPrerences;
+    CPMISSessionManager cpmisSessionManager;
 
     Class selected_form = null;
 
@@ -41,7 +41,7 @@ public class Forms extends AppCompatActivity {
         /**
          * intialize shared preferences object
          */
-        cpmisSharedPrerences = new CPMISSharedPrerences(getApplicationContext());
+        cpmisSessionManager = new CPMISSessionManager(getApplicationContext());
         populateSpinner();
         //form_navigation();
     }
