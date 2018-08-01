@@ -95,6 +95,7 @@ public class CPMISSessionManager {
 
             // Staring Login Activity
             _context.startActivity(i);
+
         }
 
     }

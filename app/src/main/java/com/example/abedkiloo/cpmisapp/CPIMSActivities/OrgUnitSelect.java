@@ -64,7 +64,7 @@ public class OrgUnitSelect extends AppCompatActivity {
         ButterKnife.bind(this);
 
         cpmisSessionManager = new CPMISSessionManager(getApplicationContext());
-        cpmisSessionManager.checkLogin();
+//        cpmisSessionManager.checkLogin();
 
 
         orgUnitAdapter = new OrgUnitAdapter(orgUnits);
@@ -74,23 +74,8 @@ public class OrgUnitSelect extends AppCompatActivity {
         orgUnitSelectRecycle.setAdapter(orgUnitAdapter);
 
 
-//        prepareOVCData();
-        Gson gson = new Gson();
-        String jsonj = "{\n" +
-                "                        \"id\":2769,\n" +
-                "                        \"org_unit_id_vis\":\"U00\",\n" +
-                "                        \"org_unit_name\":\"COMMUNITY ASSET BUILDING AND DEVELOPMENT ACTION\",\n" +
-                "                        \"org_unit_type_id\":\"TNCB\",\n" +
-                "                        \"date_operational\":null,\n" +
-                "                        \"date_closed\":null,\n" +
-                "                        \"handle_ovc\":true,\n" +
-                "                        \"is_void\":false,\n" +
-                "                        \"parent_org_unit_id\":3572,\n" +
-                "                        \"created_at\":\"2017-09-21\",\n" +
-                "                        \"created_by\":1\n" +
-                "            }";
-        OrgUnit orgUnit = gson.fromJson(jsonj, OrgUnit.class);
-        Log.e("VLAUUG", orgUnit.getParent_org_unit_id());
+        prepareOVCData();
+
         CBOsLocally();
 
 

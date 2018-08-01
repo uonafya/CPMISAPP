@@ -1,5 +1,6 @@
 package com.example.abedkiloo.cpmisapp.Utils;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 public class OVCAdapter extends RecyclerView.Adapter<OVCAdapter.MyViewHolder> {
 
     private List<OVC> ovcList;
+    private Context mCtx;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -43,6 +45,11 @@ public class OVCAdapter extends RecyclerView.Adapter<OVCAdapter.MyViewHolder> {
         this.ovcList = moviesList;
     }
 
+    public OVCAdapter(Context ctx, List<OVC> ovcListv) {
+        this.ovcList = ovcListv;
+        this.mCtx = ctx;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -54,8 +61,8 @@ public class OVCAdapter extends RecyclerView.Adapter<OVCAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         OVC movie = ovcList.get(position);
-        holder.ovc_location.setText(movie.getLocation());
-        holder.ovc_name.setText(movie.getName());
+        holder.ovc_location.setText(movie.getDesignation());
+        holder.ovc_name.setText(movie.getFirst_name() + " " + movie.getSurname());
         holder.btn_fill_ovc_form.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
