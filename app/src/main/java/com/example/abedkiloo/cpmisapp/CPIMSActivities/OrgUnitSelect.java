@@ -3,6 +3,9 @@ package com.example.abedkiloo.cpmisapp.CPIMSActivities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -12,14 +15,18 @@ import android.util.Log;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.abedkiloo.cpmisapp.Database.CBOs;
+import com.example.abedkiloo.cpmisapp.Database.CPIMSDbClient;
 import com.example.abedkiloo.cpmisapp.R;
 import com.example.abedkiloo.cpmisapp.Utils.APIService;
+import com.example.abedkiloo.cpmisapp.Utils.CBOResult;
 import com.example.abedkiloo.cpmisapp.Utils.CPMISSessionManager;
 import com.example.abedkiloo.cpmisapp.Utils.Constants;
 import com.example.abedkiloo.cpmisapp.Utils.OrgUnit;
 import com.example.abedkiloo.cpmisapp.Utils.OrgUnitAdapter;
 import com.example.abedkiloo.cpmisapp.Utils.Result;
-import com.example.abedkiloo.cpmisapp.Utils.User;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 
 import java.io.IOException;
@@ -67,14 +74,70 @@ public class OrgUnitSelect extends AppCompatActivity {
         orgUnitSelectRecycle.setAdapter(orgUnitAdapter);
 
 
-        prepareOVCData();
+//        prepareOVCData();
+        Gson gson = new Gson();
+        String jsonj = "{\n" +
+                "                        \"id\":2769,\n" +
+                "                        \"org_unit_id_vis\":\"U00\",\n" +
+                "                        \"org_unit_name\":\"COMMUNITY ASSET BUILDING AND DEVELOPMENT ACTION\",\n" +
+                "                        \"org_unit_type_id\":\"TNCB\",\n" +
+                "                        \"date_operational\":null,\n" +
+                "                        \"date_closed\":null,\n" +
+                "                        \"handle_ovc\":true,\n" +
+                "                        \"is_void\":false,\n" +
+                "                        \"parent_org_unit_id\":3572,\n" +
+                "                        \"created_at\":\"2017-09-21\",\n" +
+                "                        \"created_by\":1\n" +
+                "            }";
+        OrgUnit orgUnit = gson.fromJson(jsonj, OrgUnit.class);
+        Log.e("VLAUUG", orgUnit.getParent_org_unit_id());
+        CBOsLocally();
+
 
         /**
          * seraching through a list of items
          */
-        searchingOrgunits();
+        if (isNetworkAvailable()) {
+            searchingOrgunits();
+        } else {
+            CBOsLocally();
+        }
 
 
+    }
+
+    private void CBOsLocally() {
+        class GetCBOs extends AsyncTask<Void, Void, List<CBOs>> {
+
+            @Override
+            protected List<CBOs> doInBackground(Void... voids) {
+                List<CBOs> taskList = CPIMSDbClient
+                        .getInstance(getApplicationContext())
+                        .getAppDatabase()
+                        .cbOsDAO()
+                        .getOrgUnit();
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<CBOs> tasks) {
+                super.onPostExecute(tasks);
+//                Log.e("CBOS_DB", String.valueOf(tasks.get(3).getOrg_unit()));
+                Gson gson = new Gson();
+                for (CBOs _tasks : tasks) {
+                    OrgUnit orgUnit = gson.fromJson(_tasks.getOrg_unit(), OrgUnit.class);
+                    orgUnits.add(orgUnit);
+                }
+
+                OrgUnitAdapter adapter = new OrgUnitAdapter(OrgUnitSelect.this, orgUnits);
+                orgUnitSelectRecycle.setAdapter(adapter);
+                orgUnitAdapter.notifyDataSetChanged();
+
+            }
+        }
+
+        GetCBOs gt = new GetCBOs();
+        gt.execute();
     }
 
     private boolean searchingOrgunits() {
@@ -165,7 +228,7 @@ public class OrgUnitSelect extends AppCompatActivity {
 
         call.enqueue(new Callback<Result>() {
             @Override
-            public void onResponse(Call<Result> call, retrofit2.Response<Result> response) {
+            public void onResponse(Call<Result> call, final retrofit2.Response<Result> response) {
                 if (response.isSuccessful()) {
 
                     int objCount = Integer.parseInt(response.body().getCount());
@@ -176,6 +239,38 @@ public class OrgUnitSelect extends AppCompatActivity {
                         orgUnit.setOrg_unit_name(response.body().getResults().get(i).getOrg_unit().getOrg_unit_name());
                         orgUnit.setOrgUnitId(response.body().getResults().get(i).getOrg_unit().getParent_org_unit_id());
                         orgUnits.add(orgUnit);
+
+
+                        final int finalI = i;
+                        class SaveCBOs extends AsyncTask<Void, Void, Void> {
+
+
+                            @Override
+                            protected Void doInBackground(Void... voids) {
+                                CBOs cbOs = new CBOs();
+                                Gson gson = new Gson();
+                                String org_unit_json = gson.toJson(response.body().getResults().get(finalI).getOrg_unit());
+                                String person_json = gson.toJson(response.body().getResults().get(finalI).getOrg_unit());
+
+                                cbOs.setOrg_unit(org_unit_json);
+
+                                cbOs.setPerson(person_json);
+
+                                CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().cbOsDAO().insert(cbOs);
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                super.onPostExecute(aVoid);
+//                                finish();
+//                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        SaveCBOs saveCBOs = new SaveCBOs();
+                        saveCBOs.execute();
+
                     }
                     orgUnitAdapter.notifyDataSetChanged();
                 } else {
@@ -197,5 +292,12 @@ public class OrgUnitSelect extends AppCompatActivity {
         });
 
 
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

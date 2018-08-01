@@ -1,0 +1,45 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "e4df6971ef0459aafd9a3578c1913cd0",
+    "entities": [
+      {
+        "tableName": "CBOs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`local_db_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `person` TEXT, `org_unit` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "local_db_id",
+            "columnName": "local_db_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "person",
+            "columnName": "person",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "org_unit",
+            "columnName": "org_unit",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "local_db_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e4df6971ef0459aafd9a3578c1913cd0\")"
+    ]
+  }
+}

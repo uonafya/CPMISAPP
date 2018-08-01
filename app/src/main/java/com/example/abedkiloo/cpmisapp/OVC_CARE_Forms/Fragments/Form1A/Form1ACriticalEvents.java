@@ -1,4 +1,4 @@
-package com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.CSI;
+package com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.Form1A;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 
 import com.example.abedkiloo.cpmisapp.R;
 
-public class DomainEvalution extends Fragment {
+public class Form1ACriticalEvents extends Fragment {
 
 
-    public DomainEvalution() {
+    public Form1ACriticalEvents() {
         // Required empty public constructor
     }
 
@@ -26,7 +26,7 @@ public class DomainEvalution extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_domain_evalution, container, false);
+        return inflater.inflate(R.layout.fragment_csi_priorities, container, false);
     }
 
 

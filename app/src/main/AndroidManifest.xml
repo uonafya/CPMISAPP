@@ -17,13 +17,10 @@
             android:label="@string/title_activity_ovc">
 
         </activity>
-        <activity
-            android:name=".OVC_CARE_Forms.Activities.Form1A"
-            android:label="@string/form_1a_detail_activity" />
         <activity android:name=".CPIMSActivities.Forms" />
         <activity android:name=".CPIMSActivities.OVC_CARE" />
         <activity
-            android:name=".OVC_CARE_Forms.Activities.CSI"
+            android:name=".OVC_CARE_Forms.Activities.Form1A"
             android:label="@string/title_activity_csi" />
         <activity android:name=".CPIMSActivities.Launcher"></activity>
         <activity android:name=".CPIMSActivities.OrgUnitSelect"

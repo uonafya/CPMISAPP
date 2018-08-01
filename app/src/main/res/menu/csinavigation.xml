@@ -2,18 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_domain_evaluation"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/domain_evaluation" />
+        android:id="@+id/form_1a_assessment"
+        android:title="@string/form_1a_assessment" />
 
     <item
-        android:id="@+id/navigation_csi_priorities"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/csi_priorities" />
+        android:id="@+id/form_1a_critical_events"
+        android:title="@string/form_1a_critical_events" />
 
     <item
-        android:id="@+id/navigation_support_service"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/support_services" />
+        android:id="@+id/form_1a_priority_needs"
+        android:title="@string/form_1a_priority_needs" />
 
 </menu>

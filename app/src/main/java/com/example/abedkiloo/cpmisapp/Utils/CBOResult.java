@@ -23,5 +23,6 @@ public class CBOResult {
     @SerializedName("person")
     private User person;
     @SerializedName("org_unit")
-    private  OrgUnit  org_unit;
+    private OrgUnit org_unit;
+
 }

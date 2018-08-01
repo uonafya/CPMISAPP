@@ -1,5 +1,6 @@
 package com.example.abedkiloo.cpmisapp.Utils;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import butterknife.ButterKnife;
 
 public class OrgUnitAdapter extends RecyclerView.Adapter<OrgUnitAdapter.MyViewHolder> implements Filterable {
 
+    private Context mCtx;
     private List<OrgUnit> orgUnitList;
     private List<OrgUnit> orgUnitListFiltered;
 
@@ -45,6 +47,11 @@ public class OrgUnitAdapter extends RecyclerView.Adapter<OrgUnitAdapter.MyViewHo
 
     public OrgUnitAdapter(List<OrgUnit> orgUnits) {
         this.orgUnitList = orgUnits;
+    }
+
+    public OrgUnitAdapter(Context ctx, List<OrgUnit> orgUnits) {
+        this.orgUnitList = orgUnits;
+        this.mCtx = ctx;
     }
 
     @Override
