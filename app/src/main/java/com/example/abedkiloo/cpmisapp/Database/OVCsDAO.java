@@ -14,8 +14,8 @@ public interface OVCsDAO {
     List<OVCs> getAll();
 
 
-    @Query("SELECT * FROM OVCs")
-    List<OVCs> getOrgUnitOVCs();
+    @Query("SELECT * FROM OVCs WHERE org_unique_id = 2769")
+    List<OVCs> getOrgUnitOVCs( );
 
     @Insert
     void insert(OVCs ovcs);

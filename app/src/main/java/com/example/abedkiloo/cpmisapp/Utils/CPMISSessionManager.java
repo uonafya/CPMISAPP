@@ -32,6 +32,12 @@ public class CPMISSessionManager {
     // authorization
     public static final String KEY_TOKEN = "token";
 
+    //cbo count
+    public static final String KEY_CBO_COUNT = "cbo_count";
+
+    //cbo count
+    public static final String KEY_OVC_COUNT = "ovc_count";
+
     public CPMISSessionManager(Context cpmisContext) {
         this._context = cpmisContext;
         pref = _context.getSharedPreferences(Constants.CPIMS_PREF_NAME, PRIVATE_MODE);
@@ -59,6 +65,25 @@ public class CPMISSessionManager {
         editor.commit();
     }
 
+
+    public void update_cbo_count(int cbo_count) {
+        editor.putInt(KEY_CBO_COUNT, cbo_count);
+        editor.commit();
+    }
+
+    public int get_cbo_count() {
+        return pref.getInt(KEY_CBO_COUNT, 1);
+    }
+
+    public void update_ovc_count(int cbo_count) {
+        editor.putInt(KEY_OVC_COUNT, cbo_count);
+        editor.commit();
+    }
+
+    public int get_ovc_count() {
+        return pref.getInt(KEY_OVC_COUNT, 0);
+    }
+
     /**
      * Get stored session data
      */
@@ -70,7 +95,7 @@ public class CPMISSessionManager {
         // user email id
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
 
-   // user token
+        // user token
         user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
 
         // return user

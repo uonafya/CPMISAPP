@@ -64,7 +64,7 @@ public class OrgUnitAdapter extends RecyclerView.Adapter<OrgUnitAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        OrgUnit orgUnit = orgUnitList.get(position);
+        final OrgUnit orgUnit = orgUnitList.get(position);
         if (position % 2 == 0) {
             holder.orgUnitId.setBackgroundResource(R.color.colorAccent);
             holder.linear_orgunit.setBackgroundResource(R.color.colorAccent1);
@@ -74,7 +74,9 @@ public class OrgUnitAdapter extends RecyclerView.Adapter<OrgUnitAdapter.MyViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.getContext().startActivity(new Intent(view.getContext(), MainActivity.class));
+                Intent orgUnitIntent = new Intent(view.getContext(), MainActivity.class);
+                orgUnitIntent.putExtra("ORG_UNIT_ID", orgUnit.getId());
+                mCtx.startActivity(orgUnitIntent);
             }
         });
     }

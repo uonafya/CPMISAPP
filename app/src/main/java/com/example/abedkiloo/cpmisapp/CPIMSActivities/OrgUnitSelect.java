@@ -2,7 +2,6 @@ package com.example.abedkiloo.cpmisapp.CPIMSActivities;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -26,7 +25,6 @@ import com.example.abedkiloo.cpmisapp.Utils.OrgUnit;
 import com.example.abedkiloo.cpmisapp.Utils.OrgUnitAdapter;
 import com.example.abedkiloo.cpmisapp.Utils.Result;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 
 import java.io.IOException;
@@ -55,6 +53,7 @@ public class OrgUnitSelect extends AppCompatActivity {
 
     CPMISSessionManager cpmisSessionManager;
     private List<OrgUnit> orgUnits = new ArrayList<>();
+    private List<CBOResult> localcbos = new ArrayList<>();
     private OrgUnitAdapter orgUnitAdapter;
 
     @Override
@@ -64,7 +63,7 @@ public class OrgUnitSelect extends AppCompatActivity {
         ButterKnife.bind(this);
 
         cpmisSessionManager = new CPMISSessionManager(getApplicationContext());
-//        cpmisSessionManager.checkLogin();
+        cpmisSessionManager.checkLogin();
 
 
         orgUnitAdapter = new OrgUnitAdapter(orgUnits);
@@ -74,7 +73,7 @@ public class OrgUnitSelect extends AppCompatActivity {
         orgUnitSelectRecycle.setAdapter(orgUnitAdapter);
 
 
-        prepareOVCData();
+        fetchOnline();
 
         CBOsLocally();
 
@@ -109,7 +108,10 @@ public class OrgUnitSelect extends AppCompatActivity {
                 super.onPostExecute(tasks);
 //                Log.e("CBOS_DB", String.valueOf(tasks.get(3).getOrg_unit()));
                 Gson gson = new Gson();
+
+
                 for (CBOs _tasks : tasks) {
+
                     OrgUnit orgUnit = gson.fromJson(_tasks.getOrg_unit(), OrgUnit.class);
                     orgUnits.add(orgUnit);
                 }
@@ -155,7 +157,7 @@ public class OrgUnitSelect extends AppCompatActivity {
     }
 
 
-    private void prepareOVCData() {
+    private void fetchOnline() {
         /**
          * set authorization to JWT {token}
          */
@@ -215,18 +217,11 @@ public class OrgUnitSelect extends AppCompatActivity {
             @Override
             public void onResponse(Call<Result> call, final retrofit2.Response<Result> response) {
                 if (response.isSuccessful()) {
+                    if (cpmisSessionManager.get_cbo_count() != Integer.parseInt(response.body().getCount())) {
 
-                    int objCount = Integer.parseInt(response.body().getCount());
-                    Log.e("RETRO_SUCCESS_OBJECT", "++" + response.body().getResults().get(0).getOrg_unit().getOrgUnitId());
-                    OrgUnit orgUnit;
-                    for (int i = 0; i < objCount; i++) {
-                        orgUnit = new OrgUnit();
-                        orgUnit.setOrg_unit_name(response.body().getResults().get(i).getOrg_unit().getOrg_unit_name());
-                        orgUnit.setOrgUnitId(response.body().getResults().get(i).getOrg_unit().getParent_org_unit_id());
-                        orgUnits.add(orgUnit);
-
-
-                        final int finalI = i;
+/**
+ *                         !todo add logic for new data
+ */
                         class SaveCBOs extends AsyncTask<Void, Void, Void> {
 
 
@@ -234,30 +229,34 @@ public class OrgUnitSelect extends AppCompatActivity {
                             protected Void doInBackground(Void... voids) {
                                 CBOs cbOs = new CBOs();
                                 Gson gson = new Gson();
-                                String org_unit_json = gson.toJson(response.body().getResults().get(finalI).getOrg_unit());
-                                String person_json = gson.toJson(response.body().getResults().get(finalI).getOrg_unit());
+                                for (int i = 0; i < response.body().getResults().size(); i++) {
 
-                                cbOs.setOrg_unit(org_unit_json);
+                                    String org_unit_json = gson.toJson(response.body().getResults().get(i).getOrg_unit());
+                                    String person_json = gson.toJson(response.body().getResults().get(i).getOrg_unit());
 
-                                cbOs.setPerson(person_json);
+                                    cbOs.setOrg_unit(org_unit_json);
 
-                                CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().cbOsDAO().insert(cbOs);
+                                    cbOs.setPerson(person_json);
+
+                                    CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().cbOsDAO().insert(cbOs);
+
+                                }
                                 return null;
                             }
 
                             @Override
                             protected void onPostExecute(Void aVoid) {
                                 super.onPostExecute(aVoid);
-//                                finish();
-//                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+                                cpmisSessionManager.update_cbo_count(Integer.parseInt(response.body().getCount()));
+                                Toast.makeText(getApplicationContext(), "Saved Org Units", Toast.LENGTH_LONG).show();
+                                finish();
+                                startActivity(getIntent());
                             }
                         }
                         SaveCBOs saveCBOs = new SaveCBOs();
                         saveCBOs.execute();
-
                     }
-                    orgUnitAdapter.notifyDataSetChanged();
+
                 } else {
                     try {
                         Log.e("RETRO_SUCCESS_ERROR_1", response.errorBody().string());

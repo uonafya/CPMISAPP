@@ -1,5 +1,7 @@
 package com.example.abedkiloo.cpmisapp.CPIMSActivities;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.abedkiloo.cpmisapp.Database.CBOs;
@@ -47,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
     private List<OVC> ovclist = new ArrayList<>();
 
 
+    // orgunit id
+    String orgUnitId = "";
+
+
     @BindView(R.id.ovcRecycler)
     RecyclerView ovcRecycler;
 
@@ -63,6 +70,17 @@ public class MainActivity extends AppCompatActivity {
         cpmisSessionManager = new CPMISSessionManager(getApplicationContext());
         cpmisSessionManager.checkLogin();
 
+
+        /**
+         * get orgunit Id
+         */
+        Intent intent = getIntent();
+        if (intent.getStringExtra("ORG_UNIT_ID") != null) {
+            orgUnitId = intent.getStringExtra("ORG_UNIT_ID");
+        }
+/**
+ * initialize other views
+ */
         OVCAdapter ovcAdapter = new OVCAdapter(ovclist);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         ovcRecycler.setLayoutManager(mLayoutManager);
@@ -74,15 +92,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        prepareOVCData();
+        String OVC_URL = "ovc/orgunit/" + orgUnitId + "/ovcs/?limit=100&offset=0";
+        fetchOVCOnline(OVC_URL);
 
-        fetchOVCOnline();
 
         /**
          * ovc from the local db
          */
         OVCsLocally();
     }
-
 
 
     private void OVCsLocally() {
@@ -108,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     ovclist.add(user);
                 }
 
-              OVCAdapter ovcAdapter;
+                OVCAdapter ovcAdapter;
 
             }
         }
@@ -118,9 +136,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void fetchOVCOnline(String url) {
 
-
-    public void fetchOVCOnline() {
 
         /**
          * set authorization to JWT {token}
@@ -163,28 +180,23 @@ public class MainActivity extends AppCompatActivity {
         /**
          * define the call
          */
-        String OVC_URL = "ovc/orgunit/2779/ovcs/?limit=100&offset=100";
-        Call<OVCObject> call = service.getOrgUnitOvc(OVC_URL);
+//        String OVC_URL = "ovc/orgunit/" + orgUnitId + "/ovcs/?limit=100&offset=0";
+        Call<OVCObject> call = service.getOrgUnitOvc(url);
 
         /**
          * calling the api
          */
 
+
         call.enqueue(new Callback<OVCObject>() {
             @Override
             public void onResponse(Call<OVCObject> call, final retrofit2.Response<OVCObject> response) {
                 if (response.isSuccessful()) {
+                    final int objCount = Integer.parseInt(String.valueOf(response.body().getCount()));
 
-                    int objCount = Integer.parseInt(String.valueOf(response.body().getResults().size()));
-                    Log.e("OVC_RETRO_COUNT", String.valueOf(objCount));
-                    OVC ovc;
-                    for (int i = 0; i < objCount; i++) {
-                        ovc = new OVC(response.body().getResults().get(i).getPerson().getFirst_name(),
-                                response.body().getResults().get(i).getId());
-                        ovclist.add(ovc);
+                    if (cpmisSessionManager.get_ovc_count() <= Integer.parseInt(String.valueOf(response.body().getCount()))) {
 
-
-                        final int finalI = i;
+                        @SuppressLint("StaticFieldLeak")
                         class SaveOVCs extends AsyncTask<Void, Void, Void> {
 
 
@@ -192,43 +204,67 @@ public class MainActivity extends AppCompatActivity {
                             protected Void doInBackground(Void... voids) {
                                 OVCs ovCs = new OVCs();
                                 Gson gson = new Gson();
-                                String person_json = gson.toJson(response.body().getResults().get(finalI).getPerson());
 
-                                ovCs.setPerson(person_json);
-                                ovCs.setRegistration_date(response.body().getResults().get(finalI).getRegistration_date());
-                                ovCs.setHas_bcert(response.body().getResults().get(finalI).getHas_bcert());
-                                ovCs.setIs_disabled(response.body().getResults().get(finalI).getIs_disabled());
-                                ovCs.setHiv_status(response.body().getResults().get(finalI).getHiv_status());
-                                ovCs.setArt_status(response.body().getResults().get(finalI).getArt_status());
-                                ovCs.setSchool_level(response.body().getResults().get(finalI).getSchool_level());
-                                ovCs.setImmunization_status(response.body().getResults().get(finalI).getImmunization_status());
-                                ovCs.setOrg_unique_id(response.body().getResults().get(finalI).getOrg_unique_id());
-                                ovCs.setOrg_unique_id(response.body().getResults().get(finalI).getOrg_unique_id());
-                                ovCs.setExit_date(response.body().getResults().get(finalI).getExit_date());
-                                ovCs.setCreated_at(response.body().getResults().get(finalI).getCreated_at());
-                                ovCs.setIs_active(response.body().getResults().get(finalI).getIs_active());
-                                ovCs.setIs_void(response.body().getResults().get(finalI).getIs_void());
-                                ovCs.setCaretaker(response.body().getResults().get(finalI).getCaretaker());
-                                ovCs.setChild_cbo(response.body().getResults().get(finalI).getChild_cbo());
-                                ovCs.setChild_chv(response.body().getResults().get(finalI).getChild_chv());
+                                for (int i = 0; i < response.body().getResults().size(); i++) {
+                                    String person_json = gson.toJson(response.body().getResults().get(i).getPerson());
+                                    ovCs.setPerson(person_json);
+                                    ovCs.setId(response.body().getResults().get(i).getId());
+                                    ovCs.setRegistration_date(response.body().getResults().get(i).getRegistration_date());
+                                    ovCs.setHas_bcert(response.body().getResults().get(i).getHas_bcert());
+                                    ovCs.setIs_disabled(response.body().getResults().get(i).getIs_disabled());
+                                    ovCs.setHiv_status(response.body().getResults().get(i).getHiv_status());
+                                    ovCs.setArt_status(response.body().getResults().get(i).getArt_status());
+                                    ovCs.setSchool_level(response.body().getResults().get(i).getSchool_level());
+                                    ovCs.setImmunization_status(response.body().getResults().get(i).getImmunization_status());
+                                    ovCs.setOrg_unique_id(response.body().getResults().get(i).getOrg_unique_id());
+                                    ovCs.setOrg_unique_id(response.body().getResults().get(i).getOrg_unique_id());
+                                    ovCs.setExit_date(response.body().getResults().get(i).getExit_date());
+                                    ovCs.setCreated_at(response.body().getResults().get(i).getCreated_at());
+                                    ovCs.setIs_active(response.body().getResults().get(i).getIs_active());
+                                    ovCs.setIs_void(response.body().getResults().get(i).getIs_void());
+                                    ovCs.setCaretaker(response.body().getResults().get(i).getCaretaker());
+                                    ovCs.setChild_cbo(response.body().getResults().get(i).getChild_cbo());
+                                    ovCs.setChild_chv(response.body().getResults().get(i).getChild_chv());
 
-                                CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().ovCsDAO().insert(ovCs);
+                                    CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().ovCsDAO().insert(ovCs);
+                                }
                                 return null;
                             }
 
                             @Override
                             protected void onPostExecute(Void aVoid) {
                                 super.onPostExecute(aVoid);
-//                                finish();
-//                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+
+
+                                Toast.makeText(getApplicationContext(), "Saved " + cpmisSessionManager.get_ovc_count() + " out of " + objCount, Toast.LENGTH_LONG).show();
+                                Log.e("POST EXECUTE", "finished saving");
+                                cpmisSessionManager.update_ovc_count(cpmisSessionManager.get_ovc_count() + 100);
+
+                                if (response.body().getNext() != null) {
+                                    String nextURL = String.valueOf(response.body().getNext());
+                                    nextURL = nextURL.replaceAll("http://41.89.94.98/api/", "");
+//                                    Log.e("Fetching NEXT", "=========================================================");
+//                                    Log.e("URL", nextURL);
+//                                    Log.e("Fetching NEXT", "=========================================================");
+                                    fetchOVCOnline(nextURL);
+                                }else{
+                                    finish();
+                                    startActivity(getIntent());
+                                    Toast.makeText(getApplicationContext(), "Finished Saving the OVCs", Toast.LENGTH_LONG).show();
+
+                                }
+
+
                             }
                         }
+
                         SaveOVCs saveCBOs = new SaveOVCs();
                         saveCBOs.execute();
-
-
                     }
+
+//                    }
+
+
                 } else {
                     try {
                         Log.e("RETRO_SUCCESS_ERROR_1", response.errorBody().string());
@@ -246,8 +282,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 

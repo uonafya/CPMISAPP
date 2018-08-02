@@ -60,9 +60,10 @@ public class OVCAdapter extends RecyclerView.Adapter<OVCAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        OVC movie = ovcList.get(position);
-        holder.ovc_location.setText(movie.getDesignation());
-        holder.ovc_name.setText(movie.getFirst_name() + " " + movie.getSurname());
+        OVC ovc = ovcList.get(position);
+        holder.ovc_location.setText(ovc.getDesignation());
+        holder.ovc_gender.setText(ovc.getSex_id());
+        holder.ovc_name.setText(ovc.getFirst_name() + " " + ovc.getSurname());
         holder.btn_fill_ovc_form.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
