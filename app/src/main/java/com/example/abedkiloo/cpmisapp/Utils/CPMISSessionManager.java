@@ -27,7 +27,7 @@ public class CPMISSessionManager {
     public static final String KEY_USER_NAME = "username";
 
     // Email address (make variable public to access from outside)
-    public static final String KEY_EMAIL = "email";
+    public static final String KEY_PASSWORD = "password";
 
     // authorization
     public static final String KEY_TOKEN = "token";
@@ -48,7 +48,7 @@ public class CPMISSessionManager {
     /**
      * Create login session
      */
-    public void createLoginSession(String name, String email) {
+    public void createLoginSession(String name, String password, String token) {
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -56,10 +56,10 @@ public class CPMISSessionManager {
         editor.putString(KEY_USER_NAME, name);
 
         // Storing email in pref
-        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_PASSWORD, password);
 
         // Storing token in pref
-        editor.putString(KEY_TOKEN, email);
+        editor.putString(KEY_TOKEN, token);
 
         // commit changes
         editor.commit();
@@ -75,13 +75,17 @@ public class CPMISSessionManager {
         return pref.getInt(KEY_CBO_COUNT, 1);
     }
 
-    public void update_ovc_count(int cbo_count) {
-        editor.putInt(KEY_OVC_COUNT, cbo_count);
+    public void update_ovc_count(int cbo_count, String cbo_id) {
+        editor.putInt(KEY_OVC_COUNT + cbo_id, cbo_count);
         editor.commit();
     }
 
-    public int get_ovc_count() {
-        return pref.getInt(KEY_OVC_COUNT, 0);
+    public int get_ovc_count(String cbo_id) {
+        return pref.getInt(KEY_OVC_COUNT + cbo_id, 0);
+    }
+
+    public String get_auth_token() {
+        return pref.getString(KEY_TOKEN, "");
     }
 
     /**
@@ -93,7 +97,7 @@ public class CPMISSessionManager {
         user.put(KEY_USER_NAME, pref.getString(KEY_USER_NAME, null));
 
         // user email id
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        user.put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null));
 
         // user token
         user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));

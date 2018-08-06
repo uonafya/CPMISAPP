@@ -31,8 +31,13 @@
     <string name="orgunit">OrGUNIT</string>
 
 
-
     <!--Fill assessment forms-->
     <string name="pick_date">Pick Date</string>
     <string name="date_hint">17-July-2018</string>
+    <string name="domain">Domain </string>
+    <string name="add_assessment">Add Assessment </string>
+    <string name="submit_assessment">Submit Assessment </string>
+    <string name="service">Service </string>
+    <string name="service_status">Service Status </string>
+
 </resources>

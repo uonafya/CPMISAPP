@@ -3,6 +3,7 @@ package com.example.abedkiloo.cpmisapp.CPIMSActivities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,11 +16,13 @@ import android.widget.Toast;
 
 import com.example.abedkiloo.cpmisapp.Database.CBOs;
 import com.example.abedkiloo.cpmisapp.Database.CPIMSDbClient;
+import com.example.abedkiloo.cpmisapp.Database.Domains;
 import com.example.abedkiloo.cpmisapp.Database.OVCs;
 import com.example.abedkiloo.cpmisapp.R;
 import com.example.abedkiloo.cpmisapp.Utils.APIService;
 import com.example.abedkiloo.cpmisapp.Utils.CPMISSessionManager;
 import com.example.abedkiloo.cpmisapp.Utils.Constants;
+import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.DomainPayload;
 import com.example.abedkiloo.cpmisapp.Utils.OVC;
 import com.example.abedkiloo.cpmisapp.Utils.OVCAdapter;
 import com.example.abedkiloo.cpmisapp.Utils.OrgUnit;
@@ -28,6 +31,10 @@ import com.example.abedkiloo.cpmisapp.Utils.OrgUnitAdapter;
 import com.example.abedkiloo.cpmisapp.Utils.Result;
 import com.example.abedkiloo.cpmisapp.Utils.User;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+//        getActionBar().setHomeButtonEnabled(true);
+
         cpmisSessionManager = new CPMISSessionManager(getApplicationContext());
         cpmisSessionManager.checkLogin();
 
@@ -90,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
 //        ovcSearchView = findViewById(R.id.ovc_search);
         ovcSearchView.setIconified(false);
 
-
-//        prepareOVCData();
         String OVC_URL = "ovc/orgunit/" + orgUnitId + "/ovcs/?limit=100&offset=0";
         fetchOVCOnline(OVC_URL);
 
@@ -100,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
          * ovc from the local db
          */
         OVCsLocally();
+
+
     }
 
 
@@ -126,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
                     ovclist.add(user);
                 }
 
-                OVCAdapter ovcAdapter;
 
             }
         }
@@ -148,8 +156,9 @@ public class MainActivity extends AppCompatActivity {
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request originalRequest = chain.request();
 
-                Request.Builder builder = originalRequest.newBuilder().header("Authorization", "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiZWRraWxvbyIsIm9yaWdfaWF0IjoxNTMyOTYyODkzLCJ1c2VyX2lkIjo5NjEsImVtYWlsIjpudWxsLCJleHAiOjE1MzI5NjMxOTN9.JrN45JHRG8uC-51mBL1hQFLHDxxnw8uPlHAm4c-8czY"
-                );
+                Request.Builder builder = originalRequest.newBuilder().
+                        header("Authorization", "JWT " + cpmisSessionManager.get_auth_token());
+
                 Request newRequest = builder.build();
                 return chain.proceed(newRequest);
             }
@@ -194,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     final int objCount = Integer.parseInt(String.valueOf(response.body().getCount()));
 
-                    if (cpmisSessionManager.get_ovc_count() <= Integer.parseInt(String.valueOf(response.body().getCount()))) {
+                    if (cpmisSessionManager.get_ovc_count(orgUnitId) <= Integer.parseInt(String.valueOf(response.body().getCount()))) {
 
                         @SuppressLint("StaticFieldLeak")
                         class SaveOVCs extends AsyncTask<Void, Void, Void> {
@@ -236,9 +245,9 @@ public class MainActivity extends AppCompatActivity {
                                 super.onPostExecute(aVoid);
 
 
-                                Toast.makeText(getApplicationContext(), "Saved " + cpmisSessionManager.get_ovc_count() + " out of " + objCount, Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Saved " + cpmisSessionManager.get_ovc_count(orgUnitId) + " out of " + objCount, Toast.LENGTH_LONG).show();
                                 Log.e("POST EXECUTE", "finished saving");
-                                cpmisSessionManager.update_ovc_count(cpmisSessionManager.get_ovc_count() + 100);
+                                cpmisSessionManager.update_ovc_count(cpmisSessionManager.get_ovc_count(orgUnitId) + 100, orgUnitId);
 
                                 if (response.body().getNext() != null) {
                                     String nextURL = String.valueOf(response.body().getNext());
@@ -247,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
 //                                    Log.e("URL", nextURL);
 //                                    Log.e("Fetching NEXT", "=========================================================");
                                     fetchOVCOnline(nextURL);
-                                }else{
+                                } else {
                                     finish();
                                     startActivity(getIntent());
                                     Toast.makeText(getApplicationContext(), "Finished Saving the OVCs", Toast.LENGTH_LONG).show();
@@ -258,8 +267,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
 
-                        SaveOVCs saveCBOs = new SaveOVCs();
-                        saveCBOs.execute();
+                        SaveOVCs saveOVCs = new SaveOVCs();
+                        saveOVCs.execute();
                     }
 
 //                    }

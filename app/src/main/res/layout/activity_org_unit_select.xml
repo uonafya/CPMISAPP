@@ -9,6 +9,7 @@
 
     <SearchView
         android:id="@+id/orgunit_search"
+        android:iconifiedByDefault="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="@string/ovc_search">

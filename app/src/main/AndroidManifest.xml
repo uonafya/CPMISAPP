@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.abedkiloo.cpmisapp">
 
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -12,18 +13,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CPIMSActivities.LoginUSG"></activity>
-        <activity android:name=".CPIMSActivities.MainActivity"
-            android:label="@string/title_activity_ovc">
+        <activity android:name=".CPIMSActivities.Forms">
 
         </activity>
-        <activity android:name=".CPIMSActivities.Forms" />
+        <activity
+            android:name=".CPIMSActivities.MainActivity"
+            android:label="@string/title_activity_ovc"
+            android:parentActivityName=".CPIMSActivities.MainActivity">
+
+        </activity>
+        <activity android:name=".CPIMSActivities.LoginUSG" />
         <activity android:name=".CPIMSActivities.OVC_CARE" />
         <activity
             android:name=".OVC_CARE_Forms.Activities.Form1A"
             android:label="@string/title_activity_csi" />
-        <activity android:name=".CPIMSActivities.Launcher"></activity>
-        <activity android:name=".CPIMSActivities.OrgUnitSelect"
+        <activity android:name=".CPIMSActivities.Launcher">
+
+        </activity>
+        <activity
+            android:name=".CPIMSActivities.OrgUnitSelect"
             android:label="@string/title_activity_ovc_selection">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

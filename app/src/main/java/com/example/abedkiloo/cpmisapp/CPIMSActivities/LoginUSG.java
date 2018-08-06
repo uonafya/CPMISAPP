@@ -15,6 +15,7 @@ import com.example.abedkiloo.cpmisapp.Utils.CPMISSessionManager;
 import com.example.abedkiloo.cpmisapp.Utils.Constants;
 import com.example.abedkiloo.cpmisapp.Utils.Result;
 import com.example.abedkiloo.cpmisapp.Utils.User;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -151,8 +152,9 @@ public class LoginUSG extends AppCompatActivity {
                          */
 
                         Log.e("SUCCESS", "==" + response.body().getToken());
+
                         Toast.makeText(LoginUSG.this, response.body().toString(), Toast.LENGTH_SHORT).show();
-                        cpmisSessionManager.createLoginSession(user.getUsername(), user.getPassword());
+                        cpmisSessionManager.createLoginSession(user.getUsername(), user.getPassword(), response.body().getToken());
                         Intent form1a = new Intent(LoginUSG.this, OrgUnitSelect.class);
                         startActivity(form1a);
                     } else {
