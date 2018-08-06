@@ -6,8 +6,8 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = "DOMAIN")
-public class Domains implements Serializable {
+@Entity(tableName = "Services")
+public class Services implements Serializable {
 
 
     public int getLocal_db_id() {

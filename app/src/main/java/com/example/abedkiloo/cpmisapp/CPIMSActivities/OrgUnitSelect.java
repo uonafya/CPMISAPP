@@ -19,25 +19,21 @@ import android.widget.Toast;
 import com.example.abedkiloo.cpmisapp.Database.AllDomainsTable;
 import com.example.abedkiloo.cpmisapp.Database.CBOs;
 import com.example.abedkiloo.cpmisapp.Database.CPIMSDbClient;
-import com.example.abedkiloo.cpmisapp.Database.Domains;
+import com.example.abedkiloo.cpmisapp.Database.Services;
 import com.example.abedkiloo.cpmisapp.R;
 import com.example.abedkiloo.cpmisapp.Utils.APIService;
 import com.example.abedkiloo.cpmisapp.Utils.CBOResult;
 import com.example.abedkiloo.cpmisapp.Utils.CPMISSessionManager;
 import com.example.abedkiloo.cpmisapp.Utils.Constants;
 import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.AllDomains;
+import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.AllDomainsResuts;
 import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.DomainPayload;
 import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.Payload;
 import com.example.abedkiloo.cpmisapp.Utils.OrgUnit;
 import com.example.abedkiloo.cpmisapp.Utils.OrgUnitAdapter;
 import com.example.abedkiloo.cpmisapp.Utils.Result;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,6 +63,14 @@ public class OrgUnitSelect extends AppCompatActivity {
     private List<OrgUnit> orgUnits = new ArrayList<>();
     private List<CBOResult> localcbos = new ArrayList<>();
     private OrgUnitAdapter orgUnitAdapter;
+    List<AllDomainsResuts> allServices;
+
+
+    /**
+     * boolean Checks
+     */
+    boolean saveCBOs_bool = false;
+    boolean saveAllDomains_bool = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,30 +89,35 @@ public class OrgUnitSelect extends AppCompatActivity {
         orgUnitSelectRecycle.setAdapter(orgUnitAdapter);
 
 
-        fetchOnline();
-
+        saveCBOs_bool = fetchCBOsOnline();
+        /**
+         * if cbo list saves ?
+         */
+        if (saveCBOs_bool) {
+        }
         CBOsLocally();
 
 
-        /**
-         * searching through a list of items
-         */
-        if (isNetworkAvailable()) {
-            searchingOrgunits();
-        } else {
-            CBOsLocally();
+//        /**
+//         * searching through a list of items
+//         */
+        if (!isNetworkAvailable()) {
+            Toast.makeText(this, "Please Connect to Internet", Toast.LENGTH_SHORT).show();
         }
+//
+//        /**
+//         * get domains
+//         */
+        saveAllDomains_bool = fetchOnlineDomains();
+//
+//        /**
+//         * setting up domains
+//         */
+//        if (saveAllDomains_bool) {
+        setupDomains("DEDU");
+//            setupDomains(allServices.get(0).getItem_id());
+//        }
 
-
-        /**
-         * get domains
-         */
-        fetchOnlineDomains();
-
-        /**
-         * setting up domains
-         */
-        setupDomains();
 
     }
 
@@ -180,7 +189,7 @@ public class OrgUnitSelect extends AppCompatActivity {
     }
 
 
-    private void fetchOnline() {
+    private boolean fetchCBOsOnline() {
         /**
          * set authorization to JWT {token}
          */
@@ -250,6 +259,7 @@ public class OrgUnitSelect extends AppCompatActivity {
 
                             @Override
                             protected Void doInBackground(Void... voids) {
+
                                 CBOs cbOs = new CBOs();
                                 Gson gson = new Gson();
                                 for (int i = 0; i < response.body().getResults().size(); i++) {
@@ -272,6 +282,7 @@ public class OrgUnitSelect extends AppCompatActivity {
                                 super.onPostExecute(aVoid);
                                 cpmisSessionManager.update_cbo_count(Integer.parseInt(response.body().getCount()));
                                 Toast.makeText(getApplicationContext(), "Saved Org Units", Toast.LENGTH_LONG).show();
+                                saveCBOs_bool = true;
                                 finish();
                                 startActivity(getIntent());
                             }
@@ -282,7 +293,9 @@ public class OrgUnitSelect extends AppCompatActivity {
 
                 } else {
                     try {
-                        Log.e("RETRO_SUCCESS_ERROR_1", response.errorBody().string());
+                        Log.e("ERROR12_fetchCBOsOnline", response.errorBody().string());
+                        saveCBOs_bool = false;
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -292,16 +305,16 @@ public class OrgUnitSelect extends AppCompatActivity {
             @Override
             public void onFailure(Call<Result> call, Throwable t) {
                 Toast.makeText(OrgUnitSelect.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
-                Log.e("RETRO_FAILURE_ERROR_1", String.valueOf(t));
-
+                Log.e("ERROR13_fetchCBOsOnline", String.valueOf(t));
+                saveCBOs_bool = false;
 
             }
         });
-
+        return saveCBOs_bool;
 
     }
 
-    private void fetchOnlineDomains() {
+    private boolean fetchOnlineDomains() {
         /**
          * set authorization to JWT {token}
          */
@@ -361,12 +374,13 @@ public class OrgUnitSelect extends AppCompatActivity {
             @Override
             public void onResponse(Call<AllDomains> call, final retrofit2.Response<AllDomains> response) {
                 if (response.isSuccessful()) {
-//                    if (cpmisSessionManager.get_cbo_count() != Integer.parseInt(response.body().getCount())) {
 
 
-/**
- *                         !todo add logic for new data
- */
+//                    int db_count = allServices.size();
+//                    if (db_count < response.body().getCount()) {
+                    /**
+                     *                         !todo add logic for new data
+                     */
                     class SaveDomains extends AsyncTask<Void, Void, Void> {
 
 
@@ -399,7 +413,8 @@ public class OrgUnitSelect extends AppCompatActivity {
                         @Override
                         protected void onPostExecute(Void aVoid) {
                             super.onPostExecute(aVoid);
-//                            startActivity(getIntent());
+                            saveAllDomains_bool = true;
+                            startActivity(getIntent());
                         }
                     }
                     SaveDomains saveDomains = new SaveDomains();
@@ -408,7 +423,8 @@ public class OrgUnitSelect extends AppCompatActivity {
 
                 } else {
                     try {
-                        Log.e("RETRO_SUCCESS_ERROR_1", response.errorBody().string());
+                        Log.e("ERROR_1_fetchCBOsOnline", response.errorBody().string());
+                        saveAllDomains_bool = false;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -418,12 +434,12 @@ public class OrgUnitSelect extends AppCompatActivity {
             @Override
             public void onFailure(Call<AllDomains> call, Throwable t) {
                 Toast.makeText(OrgUnitSelect.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
-                Log.e("RETRO_FAILURE_ERROR_1", String.valueOf(t));
-
+                Log.e("ERROR14_fetchCBOsOnline", String.valueOf(t));
+                saveAllDomains_bool = false;
 
             }
         });
-
+        return saveAllDomains_bool;
 
     }
 
@@ -440,7 +456,7 @@ public class OrgUnitSelect extends AppCompatActivity {
      */
 
 
-    public void setupDomains() {
+    public void setupDomains(String item_id) {
 
         /**
          * set authorization to JWT {token}
@@ -488,7 +504,8 @@ public class OrgUnitSelect extends AppCompatActivity {
          */
 //        final User user = new User(user_name, password);
 
-        DomainPayload domainPayload = new DomainPayload("DEDU", 2);
+
+        DomainPayload domainPayload = new DomainPayload(item_id, 2);
         Gson gson = new Gson();
         Payload payload = new Payload();
         payload.setDomainPayload(domainPayload);
@@ -498,7 +515,7 @@ public class OrgUnitSelect extends AppCompatActivity {
          * define the call
          */
 //        String domain_url = "41.89.94.98/api/main/setuplists/children/";
-        Call<List<Domains>> call = service.getDomains(payload);
+        Call<List<Services>> call = service.getDomains(payload);
 
 
         Log.e("RETRO_PAYLOAD", String.valueOf(payload));
@@ -507,9 +524,9 @@ public class OrgUnitSelect extends AppCompatActivity {
          */
 
 
-        call.enqueue(new Callback<List<Domains>>() {
+        call.enqueue(new Callback<List<Services>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Domains>> call, final retrofit2.Response<List<Domains>> response) {
+            public void onResponse(@NonNull Call<List<Services>> call, final retrofit2.Response<List<Services>> response) {
                 if (response.isSuccessful()) {
 
 
@@ -519,20 +536,18 @@ public class OrgUnitSelect extends AppCompatActivity {
 
                         @Override
                         protected Void doInBackground(Void... voids) {
-                            Domains domains = new Domains();
+
+                            allServices = CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().allDomainssDAO().getAllServices();
+                            Services services = new Services();
 
                             for (int i = 0; i < response.body().size(); i++) {
                                 String item_sub_category = response.body().get(i).getItem_sub_category();
                                 String status = response.body().get(i).getStatus();
                                 String item_sub_category_id = response.body().get(i).getItem_sub_category_id();
-                                domains.setItem_sub_category(item_sub_category);
-                                domains.setItem_sub_category(status);
-                                domains.setItem_sub_category(item_sub_category_id);
-                                CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().domainsDAO().insert(domains);
-
-
-                                Log.e("RETRO_SUB_CATe", item_sub_category_id);
-
+                                services.setItem_sub_category(item_sub_category);
+                                services.setStatus(status);
+                                services.setItem_sub_category_id(item_sub_category_id);
+                                CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().domainsDAO().insert(services);
 
                             }
                             return null;
@@ -543,6 +558,11 @@ public class OrgUnitSelect extends AppCompatActivity {
                             super.onPostExecute(aVoid);
 
 
+                            for (int i = 0; i < allServices.size(); i++) {
+                                setupDomains(allServices.get(i).getItem_id());
+                            }
+                            Toast.makeText(OrgUnitSelect.this, "Completed Saving Services", Toast.LENGTH_SHORT).show();
+                            startActivity(getIntent());
                         }
                     }
 
@@ -563,7 +583,7 @@ public class OrgUnitSelect extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Domains>> call, Throwable t) {
+            public void onFailure(Call<List<Services>> call, Throwable t) {
 //                Toast.makeText(OrgUnitSelect.this, String.valueOf(t), Toast.LENGTH_SHORT).show();
                 Log.e("RETRO_FAILURE_ERROR_1", String.valueOf(t));
 
@@ -571,4 +591,6 @@ public class OrgUnitSelect extends AppCompatActivity {
             }
         });
     }
+
+
 }

@@ -1,13 +1,8 @@
 package com.example.abedkiloo.cpmisapp.Utils;
 
-import com.example.abedkiloo.cpmisapp.Database.Domains;
+import com.example.abedkiloo.cpmisapp.Database.Services;
 import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.AllDomains;
-import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.DomainPayload;
 import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.Payload;
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -53,6 +48,6 @@ public interface APIService {
 
 
     @POST("main/setuplists/children/")
-    Call<List<Domains>> getDomains(@Body Payload domainPayload);
+    Call<List<Services>> getDomains(@Body Payload domainPayload);
 
 }

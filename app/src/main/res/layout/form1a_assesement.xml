@@ -55,7 +55,7 @@
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatSpinner
-                    android:id="@+id/assessment_spinner"
+                    android:id="@+id/domain_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/linear_design">

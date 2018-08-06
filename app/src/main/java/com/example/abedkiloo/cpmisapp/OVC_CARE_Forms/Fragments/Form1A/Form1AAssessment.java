@@ -1,15 +1,12 @@
 package com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.Form1A;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,22 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.example.abedkiloo.cpmisapp.Database.CPIMSDbClient;
-import com.example.abedkiloo.cpmisapp.Database.Domains;
-import com.example.abedkiloo.cpmisapp.Database.OVCs;
 import com.example.abedkiloo.cpmisapp.R;
-import com.example.abedkiloo.cpmisapp.Utils.APIService;
-import com.example.abedkiloo.cpmisapp.Utils.Constants;
-import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.DomainObject;
-import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.DomainPayload;
-import com.example.abedkiloo.cpmisapp.Utils.OVCObject;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -41,13 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Form1AAssessment extends Fragment {
 
@@ -56,7 +32,7 @@ public class Form1AAssessment extends Fragment {
     AppCompatButton btnPickDate;
     @BindView(R.id.setEditDate)
     AppCompatTextView setEditDate;
-    @BindView(R.id.assessment_spinner)
+    @BindView(R.id.domain_spinner)
     AppCompatSpinner assessment_spinner;
     @BindView(R.id.service_spinner)
     AppCompatSpinner service_spinner;
@@ -83,14 +59,8 @@ public class Form1AAssessment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         // Inflate the layout for this fragment
 
-        populateAssessmentSpinner();
-        //
-        populateServiceSpinner();
-        //
-        populateServiceStatuSpinner();
 
-
-//        setupDomains();
+        populateFormData();
         return view;
     }
 
@@ -155,6 +125,34 @@ public class Form1AAssessment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    public void populateFormData() {
+
+        populateAssessmentSpinner();
+        //
+        populateServiceSpinner();
+        //
+        populateServiceStatuSpinner();
+
+
+        class GetFormData extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+            }
+        }
+        GetFormData getFormData = new GetFormData();
+        getFormData.execute();
+
+
+    }
 
 
 }

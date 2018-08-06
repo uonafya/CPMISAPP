@@ -3,7 +3,6 @@ package com.example.abedkiloo.cpmisapp.CPIMSActivities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,30 +10,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.abedkiloo.cpmisapp.Database.CBOs;
 import com.example.abedkiloo.cpmisapp.Database.CPIMSDbClient;
-import com.example.abedkiloo.cpmisapp.Database.Domains;
 import com.example.abedkiloo.cpmisapp.Database.OVCs;
 import com.example.abedkiloo.cpmisapp.R;
 import com.example.abedkiloo.cpmisapp.Utils.APIService;
 import com.example.abedkiloo.cpmisapp.Utils.CPMISSessionManager;
 import com.example.abedkiloo.cpmisapp.Utils.Constants;
-import com.example.abedkiloo.cpmisapp.Utils.Form1A.Domains.DomainPayload;
 import com.example.abedkiloo.cpmisapp.Utils.OVC;
 import com.example.abedkiloo.cpmisapp.Utils.OVCAdapter;
-import com.example.abedkiloo.cpmisapp.Utils.OrgUnit;
 import com.example.abedkiloo.cpmisapp.Utils.OVCObject;
-import com.example.abedkiloo.cpmisapp.Utils.OrgUnitAdapter;
-import com.example.abedkiloo.cpmisapp.Utils.Result;
-import com.example.abedkiloo.cpmisapp.Utils.User;
 import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -12,5 +12,8 @@
     <item
         android:id="@+id/form_1a_priority_needs"
         android:title="@string/form_1a_priority_needs" />
+    <item
+        android:id="@+id/form_1a_services"
+        android:title="@string/form_1a_services" />
 
 </menu>
