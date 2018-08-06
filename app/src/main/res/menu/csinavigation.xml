@@ -2,17 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:icon="@android:drawable/alert_light_frame"
+
         android:id="@+id/form_1a_assessment"
         android:title="@string/form_1a_assessment" />
 
     <item
+        android:icon="@android:drawable/alert_light_frame"
+
         android:id="@+id/form_1a_critical_events"
         android:title="@string/form_1a_critical_events" />
 
     <item
+        android:icon="@android:drawable/alert_light_frame"
         android:id="@+id/form_1a_priority_needs"
         android:title="@string/form_1a_priority_needs" />
     <item
+        android:icon="@android:drawable/alert_light_frame"
+
         android:id="@+id/form_1a_services"
         android:title="@string/form_1a_services" />
 

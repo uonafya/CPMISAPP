@@ -11,6 +11,8 @@ import android.view.MenuItem;
 
 import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.Form1A.Form1ACriticalEvents;
 import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.Form1A.Form1AAssessment;
+import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.Form1A.Form1APriorityNeeds;
+import com.example.abedkiloo.cpmisapp.OVC_CARE_Forms.Fragments.Form1A.Form1AServices;
 import com.example.abedkiloo.cpmisapp.R;
 
 public class Form1A extends AppCompatActivity {
@@ -35,7 +37,12 @@ public class Form1A extends AppCompatActivity {
                     return true;
                 case R.id.form_1a_priority_needs:
                     toolbar.setTitle(R.string.form_1a_priority_needs);
-                    fragment = new Form1AAssessment();
+                    fragment = new Form1APriorityNeeds();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.form_1a_services:
+                    toolbar.setTitle(R.string.form_1a_services);
+                    fragment = new Form1AServices();
                     loadFragment(fragment);
                     return true;
             }

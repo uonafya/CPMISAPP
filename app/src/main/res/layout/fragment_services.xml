@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/sp_16"
-    tools:context=".OVC_CARE_Forms.Fragments.Form1A.Form1AAssessment">
+    tools:context=".OVC_CARE_Forms.Fragments.Form1A.Form1ACriticalEvents">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,27 +13,6 @@
         android:layout_marginTop="@dimen/sp_80"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/sp_60"
-            android:background="@drawable/linear_design"
-            android:weightSum="1">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/setEditDate"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/sp_40"
-                android:layout_weight="0.7"
-                android:hint="@string/date_hint"
-                android:textAlignment="center" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btnPickDate"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/sp_40"
-                android:layout_weight="0.3"
-                android:text="@string/pick_date" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,7 +35,7 @@
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatSpinner
-                    android:id="@+id/domain_spinner"
+                    android:id="@+id/services_domain_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/linear_design">
@@ -72,17 +52,30 @@
                 <android.support.v7.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/service"
+                    android:text="@string/service_status"
                     android:textStyle="bold" />
 
-                <android.support.v7.widget.AppCompatSpinner
-                    android:id="@+id/service_spinner"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownWidth="fill_parent">
+                    android:layout_height="@dimen/sp_60"
+                    android:background="@drawable/linear_design"
+                    android:weightSum="1">
 
-                </android.support.v7.widget.AppCompatSpinner>
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/servicesNeedDate"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/sp_40"
+                        android:layout_weight="0.7"
+                        android:hint="@string/date_hint"
+                        android:textAlignment="center" />
 
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/btnservicesPickDate"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/sp_40"
+                        android:layout_weight="0.3"
+                        android:text="@string/pick_date" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -92,27 +85,12 @@
                 android:orientation="vertical"
                 android:padding="@dimen/dp_5">
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/service_status"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.AppCompatSpinner
-                    android:id="@+id/service_status_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dialog"
-                    android:background="@drawable/spinner_design">
-
-                </android.support.v7.widget.AppCompatSpinner>
-
                 <android.support.v7.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/sp_16"
                     android:background="@color/colorPrimaryDark"
-                    android:text="@string/add_assessment" />
+                    android:text="@string/add_services" />
             </LinearLayout>
 
 
@@ -134,6 +112,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/sp_10"
         android:background="@color/colorPrimaryDark"
-        android:text="@string/submit_assessment" />
+        android:text="@string/submit_services" />
+
 
 </RelativeLayout>

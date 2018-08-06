@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/sp_16"
+    tools:context=".OVC_CARE_Forms.Fragments.Form1A.Form1ACriticalEvents">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/sp_80"
+        android:background="@drawable/linear_design"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_5"
+            android:text="@string/critical_events"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <CheckBox
+                android:layout_width="match_parent"
+                android:text="@string/change_of_care_giver"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:layout_width="match_parent"
+                android:text="@string/change_of_care_giver"
+                android:layout_height="wrap_content" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/change_of_care_giver" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/sp_10"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/submit_critical_events" />
+
+</RelativeLayout>

@@ -26,18 +26,20 @@
         <activity android:name=".CPIMSActivities.OVC_CARE" />
         <activity
             android:name=".OVC_CARE_Forms.Activities.Form1A"
-            android:label="@string/title_activity_csi" />
+            android:label="@string/form_1a_" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".CPIMSActivities.Launcher">
 
         </activity>
         <activity
             android:name=".CPIMSActivities.OrgUnitSelect"
             android:label="@string/title_activity_ovc_selection">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

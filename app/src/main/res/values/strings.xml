@@ -12,6 +12,7 @@
     <string name="fill_form">Fill Details</string>
     <string name="password_hint">Password</string>
     <string name="sign_in">Sign In</string>
+    <string name="form_1a_">Form 1A</string>
     <string name="form_1a_detail_activity">Form 1A Details</string>
     <string name="form_1a_assessment">Assessment</string>
     <string name="form_1a_critical_events">Critical Event(s)</string>
@@ -34,10 +35,18 @@
     <!--Fill assessment forms-->
     <string name="pick_date">Pick Date</string>
     <string name="date_hint">17-July-2018</string>
-    <string name="domain">Domain </string>
+    <string name="domain"> Critical Events </string>
+    <string name="critical_events">Domain </string>
+    <string name="change_of_care_giver">Change Of Caregiver </string>
+    <string name="add_priority_need">Add Priority Need </string>
     <string name="add_assessment">Add Assessment </string>
-    <string name="submit_assessment">Submit Assessment </string>
+    <string name="submit_assessment">Submit Assessments </string>
+    <string name="submit_priority_need">Submit Priority Needs </string>
     <string name="service">Service </string>
+    <string name="priority_need">Priority Need </string>
     <string name="service_status">Service Status </string>
+    <string name="add_services">Add Service</string>
+    <string name="submit_services">Submit Services</string>
+    <string name="submit_critical_events">Submit Critical Events</string>
 
 </resources>
