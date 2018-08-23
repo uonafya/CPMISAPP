@@ -14,10 +14,15 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.example.abedkiloo.cpmisapp.Database.CPIMSDatabase;
+import com.example.abedkiloo.cpmisapp.Database.CPIMSDbClient;
+import com.example.abedkiloo.cpmisapp.Database.ServicesStatus;
 import com.example.abedkiloo.cpmisapp.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -38,6 +43,7 @@ public class Form1AAssessment extends Fragment {
     AppCompatSpinner service_spinner;
     @BindView(R.id.service_status_spinner)
     AppCompatSpinner service_status_spinner;
+
 
     private Unbinder unbinder;
 
@@ -84,22 +90,40 @@ public class Form1AAssessment extends Fragment {
     }
 
 
-    private void populateAssessmentSpinner() {
-        String[] criteria = new String[]{"Education", "Health & Nutrition", "HouseHold Economic Strengthening", "Protection", "Psychosocial Support", "Shelter and Care"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, criteria);
+    private void populateAssessmentSpinner(List<Domains> assesements) {
+
+
+        List<String> arrayAssessString = new ArrayList<>();
+        for (Domains assesements1 : assesements) {
+            arrayAssessString.add(assesements1.getItem_description());
+        }
+        ArrayAdapter<String> adapter = new
+                ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, arrayAssessString);
         assessment_spinner.setAdapter(adapter);
     }
 
-    private void populateServiceSpinner() {
-        String[] criteria = new String[]{"Names", "Household", "CHV", "CBO", "Caregiver"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, criteria);
+    private void populateServiceSpinner(List<OVCServices> services) {
+
+
+        List<String> arrayAssessString = new ArrayList<>();
+        for (OVCServices assesements1 : services) {
+            arrayAssessString.add(assesements1.getItem_description());
+        }
+        ArrayAdapter<String> adapter = new
+                ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, arrayAssessString);
         service_spinner.setAdapter(adapter);
     }
 
-    private void populateServiceStatuSpinner() {
-        String[] criteria = new String[]{"Active", "inactive"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, criteria);
+    private void populateServiceStatuSpinner(List<ServicesStatus> servicesStatuses) {
+
+        List<String> arrayServiceString = new ArrayList<>();
+        for (ServicesStatus assesements1 : servicesStatuses) {
+            arrayServiceString.add(assesements1.getItem_sub_category());
+        }
+        ArrayAdapter<String> adapter = new
+                ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, arrayServiceString);
         service_status_spinner.setAdapter(adapter);
+
     }
 
     public void showCalender() {
@@ -127,18 +151,24 @@ public class Form1AAssessment extends Fragment {
 
     public void populateFormData() {
 
-        populateAssessmentSpinner();
-        //
-        populateServiceSpinner();
-        //
-        populateServiceStatuSpinner();
-
 
         class GetFormData extends AsyncTask<Void, Void, Void> {
 
             @Override
             protected Void doInBackground(Void... voids) {
+                CPIMSDatabase cpimsDbClient = CPIMSDbClient.getInstance(getContext()).getAppDatabase();
 
+                List<Domains> domains = cpimsDbClient.allDomainssDAO().getDomains();
+                populateAssessmentSpinner(domains);
+
+
+                List<OVCServices> services = cpimsDbClient.servicesDAO().getServices();
+
+                populateServiceSpinner(services);
+
+                List<ServicesStatus> servicesStatuses = cpimsDbClient.servicesStatusDAO().getServiceStatus();
+
+                populateServiceStatuSpinner(servicesStatuses);
                 return null;
             }
 

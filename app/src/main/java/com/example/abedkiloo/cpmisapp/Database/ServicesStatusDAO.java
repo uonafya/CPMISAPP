@@ -11,10 +11,10 @@ import java.util.List;
 @Dao
 public interface ServicesStatusDAO {
     @Query("SELECT * FROM ServicesStatus")
-    List<Services> getAll();
+    List<ServicesStatus> getAll();
 
 
-    @Query("SELECT * FROM Services WHERE item_sub_category = 2769")
+    @Query("SELECT * FROM ServicesStatus")
     List<ServicesStatus> getServiceStatus();
 
     @Insert

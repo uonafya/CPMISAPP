@@ -547,7 +547,7 @@ public class OrgUnitSelect extends AppCompatActivity {
                                 services.setItem_sub_category(item_sub_category);
                                 services.setStatus(status);
                                 services.setItem_sub_category_id(item_sub_category_id);
-                                CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().domainsDAO().insert(services);
+                                CPIMSDbClient.getInstance(getApplicationContext()).getAppDatabase().servicesDAO().insert(services);
 
                             }
                             return null;
@@ -561,7 +561,7 @@ public class OrgUnitSelect extends AppCompatActivity {
                             for (int i = 0; i < allServices.size(); i++) {
                                 setupDomains(allServices.get(i).getItem_id());
                             }
-                            Toast.makeText(OrgUnitSelect.this, "Completed Saving Services", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OrgUnitSelect.this, "Completed Saving OVCServices", Toast.LENGTH_SHORT).show();
                             startActivity(getIntent());
                         }
                     }

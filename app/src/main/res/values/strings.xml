@@ -35,8 +35,8 @@
     <!--Fill assessment forms-->
     <string name="pick_date">Pick Date</string>
     <string name="date_hint">17-July-2018</string>
-    <string name="domain"> Critical Events </string>
-    <string name="critical_events">Domain </string>
+    <string name="critical_events"> Critical Events </string>
+    <string name="domain">Domain </string>
     <string name="change_of_care_giver">Change Of Caregiver </string>
     <string name="add_priority_need">Add Priority Need </string>
     <string name="add_assessment">Add Assessment </string>
